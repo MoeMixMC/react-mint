@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { init, getOwnBalance } from './Web3Client'
 
 function App() {
