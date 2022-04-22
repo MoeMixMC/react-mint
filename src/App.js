@@ -28,6 +28,7 @@ function App() {
 
   return (
     <div className="App">
+      
       <p> Your Balance is {balance} ETH </p>
       <button onClick={() => fetchBalance()}>Refresh Balance</button>
 
@@ -41,9 +42,7 @@ function App() {
         <input className='param2' type='text'></input>
         <button onClick={() => mintTokens()}>Mint</button>
       </div>
-      
-      
-      
+
     </div>
   );
 }
