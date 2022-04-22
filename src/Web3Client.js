@@ -44,28 +44,6 @@ export const init = async () => {
 	// 	NFTContractBuild.networks[networkId].address
 	// );
 
-	 /* const abi = [
-		{
-			constant: true,
-			inputs: [
-				{
-					name: '_owner',
-					type: 'address'
-				}
-			],
-			name: 'balanceOf',
-			outputs: [
-				{
-					name: 'balance',
-					type: 'uint256'
-				}
-			],
-			payable: false,
-			stateMutability: 'view',
-			type: 'function'
-		}
-	];  */
-
     let response = await axios.get('https://api.etherscan.io/api?module=contract&action=getabi&address=' + NFT_CONTRACT_ADDRESS + '&apikey=9SQVDEWPVU54IQW67IFQCNVG87H5EBTXJT');
     let data = response.data
 
@@ -102,13 +80,13 @@ export const getBalance = async () => {
     return web3.utils.fromWei(`${number}`, 'ether')
 }
 
-export const mintTokens = async () => {
+export const mint = async (param1, param2) => {
     if (!isInitialized) {
 		await init();
 	}
 
     return nftContract.methods
-		.mint()
+		.mint(param1, param2)
 		.send()
 }
 
