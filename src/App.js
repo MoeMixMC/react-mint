@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getBalance, getMaxSupply, init, mint } from './Web3Client'
 
 function App() {
 
   const [balance, setBalance] = useState(0)
   const [maxSupply, setMaxSupply] = useState(0)
+
+  useEffect(() => {
+    init()
+  }, [])
 
   const fetchBalance = () => {
     getBalance().then(balance => {
@@ -38,7 +42,6 @@ function App() {
 
       <div>
         <input className='param1' type='text'></input>
-        <input className='param2' type='text'></input>
         <button onClick={() => mintTokens()}>Mint</button>
       </div>
       
