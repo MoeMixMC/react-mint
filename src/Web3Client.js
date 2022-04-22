@@ -12,9 +12,10 @@ let selectedAccount;
 let nftContract;
 
 let isInitialized = false;
+let provider = window.ethereum;
+let web3
 
 export const init = async () => {
-	let provider = window.ethereum;
 
 	if (typeof provider !== 'undefined') {
 		provider
@@ -34,9 +35,9 @@ export const init = async () => {
 		});
 	}
 
-	const web3 = new Web3(provider);
+	web3 = new Web3(provider);
 
-	const networkId = await web3.eth.net.getId();
+	//const networkId = await web3.eth.net.getId();
 
 	// nftContract = new web3.eth.Contract(
 	// 	NFTContractBuild.abi,
@@ -81,7 +82,7 @@ export const init = async () => {
 	isInitialized = true;
 };
 
-export const getOwnBalance = async () => {
+export const getMaxSupply = async () => {
 	if (!isInitialized) {
 		await init();
 	}
@@ -90,6 +91,26 @@ export const getOwnBalance = async () => {
 		.maxSupply()
 		.call()
 };
+
+export const getBalance = async () => {
+    if (!isInitialized) {
+		await init();
+	}
+
+    let number = await web3.eth.getBalance(selectedAccount)
+    console.log(web3.utils.fromWei(`${number}`, 'ether'))
+    return web3.utils.fromWei(`${number}`, 'ether')
+}
+
+export const mintTokens = async () => {
+    if (!isInitialized) {
+		await init();
+	}
+
+    return nftContract.methods
+		.mint()
+		.send()
+}
 
 // export const mintToken = async () => {
 // 	if (!isInitialized) {
