@@ -10,8 +10,6 @@ let selectedAccount;
 
 // let nftContract;
 let nftContract;
-
-let isInitialized = false;
 let provider = window.ethereum;
 let web3
 
@@ -44,7 +42,7 @@ export const init = async () => {
 	// 	NFTContractBuild.networks[networkId].address
 	// );
 
-    let response = await axios.get('https://api.etherscan.io/api?module=contract&action=getabi&address=' + NFT_CONTRACT_ADDRESS + '&apikey=9SQVDEWPVU54IQW67IFQCNVG87H5EBTXJT');
+/*     let response = await axios.get('https://api.etherscan.io/api?module=contract&action=getabi&address=' + NFT_CONTRACT_ADDRESS + '&apikey=9SQVDEWPVU54IQW67IFQCNVG87H5EBTXJT');
     let data = response.data
 
     // create the smart contract JSON ABI
@@ -55,15 +53,10 @@ export const init = async () => {
 		JSON.parse(abi),
 		// Dai contract on Rinkeby
 		NFT_CONTRACT_ADDRESS
-	);
-
-	isInitialized = true;
+	); */
 };
 
 export const getMaxSupply = async () => {
-	if (!isInitialized) {
-		await init();
-	}
 
 	return nftContract.methods
 		.maxSupply()
@@ -71,9 +64,6 @@ export const getMaxSupply = async () => {
 };
 
 export const getBalance = async () => {
-    if (!isInitialized) {
-		await init();
-	}
 
     let number = await web3.eth.getBalance(selectedAccount)
     console.log(web3.utils.fromWei(`${number}`, 'ether'))
@@ -81,9 +71,6 @@ export const getBalance = async () => {
 }
 
 export const mint = async (param1, param2) => {
-    if (!isInitialized) {
-		await init();
-	}
 
     return nftContract.methods
 		.mint(param1, param2)
