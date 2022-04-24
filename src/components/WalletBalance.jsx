@@ -15,9 +15,11 @@ function WalletBalance() {
       }
 
   return (
-    <div>
-      <p> Your Balance is {balance} ETH </p>
-      <button onClick={() => fetchBalance()}>Refresh Balance</button>
+    <div className="WalletBalance">
+      <span> Your Balance</span>
+      <span>{balance} </span>
+      <span>ETH</span>
+      <button type="button" className="btn btn-success" onClick={() => fetchBalance()} style={{width: 100}}>Refresh</button>
     </div>
   );
 }

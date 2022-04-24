@@ -4,7 +4,7 @@ import axios from 'axios'
 import 'dotenv/config'
 
 //const NFT_CONTRACT_ADDRESS = process.env.NFT_CONTRACT_ADDRESS
-const NFT_CONTRACT_ADDRESS = '0xf8D4fEf9af82De6E57F6aABAFd49ff9730242d75'
+let NFT_CONTRACT_ADDRESS
 
 let selectedAccount;
 
@@ -42,25 +42,36 @@ export const init = async () => {
 	// 	NFTContractBuild.networks[networkId].address
 	// );
 
-/*     let response = await axios.get('https://api.etherscan.io/api?module=contract&action=getabi&address=' + NFT_CONTRACT_ADDRESS + '&apikey=9SQVDEWPVU54IQW67IFQCNVG87H5EBTXJT');
+};
+
+export const getDetails = async (nftAddress) => {
+	
+	let methodArray = [];
+
+	NFT_CONTRACT_ADDRESS = nftAddress
+	let response = await axios.get('https://api.etherscan.io/api?module=contract&action=getabi&address=' + NFT_CONTRACT_ADDRESS + '&apikey=9SQVDEWPVU54IQW67IFQCNVG87H5EBTXJT');
     let data = response.data
 
     // create the smart contract JSON ABI
-    let abi = data.result;
+    let abi_r = data.result;
+	let abi = JSON.parse(abi_r);
     console.log('ABI created')
 
 	nftContract = new web3.eth.Contract(
-		JSON.parse(abi),
+		abi,
 		// Dai contract on Rinkeby
 		NFT_CONTRACT_ADDRESS
-	); */
-};
+	);
 
-export const getMaxSupply = async () => {
 
-	return nftContract.methods
-		.maxSupply()
-		.call()
+	for(let item of abi) {
+    	if(item.name){
+			methodArray.push(item.name)
+			//console.log(item);
+		}
+	}
+	console.log(methodArray)
+	return methodArray
 };
 
 export const getBalance = async () => {

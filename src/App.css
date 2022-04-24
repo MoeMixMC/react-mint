@@ -1,3 +1,50 @@
 .App {
+  margin: 40px;
+  border: 2px solid #0000ff;
+}
+
+.AppContainer {
+  display: flex;
+  flex-direction: row;
+  border: 5px solid yellow;
+}
+
+.WalletBalance {
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  align-items: center;
+  border: 2px solid green;
+  border-radius: 10px;
+  height: 200px;
+  width: 200px;
+}
+
+.MintingForm {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  width: 100%;
+  border: 2px solid red;
+  border-radius: 10px;
+  
+}
+
+.NFTInfo {
+  display:flex;
+  flex-direction: row;
+}
+
+.Methods {
+  display: flex;
+  flex-direction: column;
+}
+
+.MintingForm div{
+  border: 2px solid red;
+  border-radius: 10px;
+}
+
+.MintingButton {
+  width:100%;
 }
