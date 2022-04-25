@@ -8,14 +8,13 @@ import {
   
   export function Dropdown(props) {
     return (
-      <DropdownWrapper action={props.action}>
-        <StyledLabel htmlFor="services">
+      <DropdownWrapper action={props.action} onChange={props.onChange}>
+        <StyledLabel htmlFor="functions">
           {props.formLabel}
         </StyledLabel>
-        <StyledSelect id="services" name="services">
+        <StyledSelect id="functions" name="functions">
           {props.children}
         </StyledSelect>
-        <StyledButton type="submit" value={props.buttonText} />
       </DropdownWrapper>
     );
   }
@@ -23,7 +22,7 @@ import {
   export function Option(props) {
     return (
       <StyledOption selected={props.selected}>
-        {props.value}
+        {props.value.name}
       </StyledOption>
     );
   }

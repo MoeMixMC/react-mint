@@ -3,6 +3,7 @@ import {useState} from 'react'
 import { Dropdown, Option } from './Dropdown'
 function MintingForm() {
 
+    const [selectedMethod, setSelectedMethod] = useState("")
     const [details, setDetails] = useState(0)
     const [nftAddress, setNFTAddress] = useState('0x')
     
@@ -18,10 +19,18 @@ function MintingForm() {
         })
       }
     
+    const handleChange = (e) => {
+        let item
+        for(item of detailsKeys){
+            if (item.name == e.target.value){
+                setSelectedMethod(item)
+            }
+        }
+    }
+    
     let detailsKeys = Array.from(details)
-    var detailsOutput = detailsKeys.map(item => (<Option key={item} value={item}/>))
-    var detailsBr = detailsKeys.map(item => (<><Option key={item} value={Array.from(item.name)}/><br /></>))
-    // key={item}
+    var detailsOutput = detailsKeys.map(item => (<Option key={item.signature} value={item}/>))
+    var detailsBr = detailsKeys.map(item => (<><Option key={Object.create(item)} value={item}/><br /></>))
     /* var detailsOutput = details.forEach(function (item, index) {
         <span>{item}</span>
       }); */
@@ -34,17 +43,18 @@ function MintingForm() {
                 </div>
                 
                 <div className='Methods'>
-                    <Dropdown 
-                        formLabel='Choose a service'
-                        buttonText='Send form'
-                        action="/"
-                    >
-                    
-                    <Option value="Choose a method" />
-                    {detailsOutput}
+                    {
+                        <Dropdown
+                            formLabel='Choose a function'
+                            buttonText='Send form'
+                            onChange={handleChange}
+                            action='/'
+                        >
+                            {detailsOutput}
 
-                    </Dropdown>
-                    {detailsBr}
+                        </Dropdown> 
+                    }
+                    <p>You selected {selectedMethod.name}</p>
                 </div>
             </div>
 
