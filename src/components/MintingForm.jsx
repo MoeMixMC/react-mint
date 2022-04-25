@@ -1,5 +1,6 @@
 import {getDetails, mint} from '../Web3Client'
 import {useState} from 'react'
+import { Dropdown, Option } from './Dropdown'
 function MintingForm() {
 
     const [details, setDetails] = useState(0)
@@ -18,7 +19,9 @@ function MintingForm() {
       }
     
     let detailsKeys = Array.from(details)
-    var detailsOutput = detailsKeys.map(item => (<div><span key={item}>{item}</span><br /></div>))
+    var detailsOutput = detailsKeys.map(item => (<Option key={item} value={item}/>))
+    var detailsBr = detailsKeys.map(item => (<><Option key={item} value={Array.from(item.name)}/><br /></>))
+    // key={item}
     /* var detailsOutput = details.forEach(function (item, index) {
         <span>{item}</span>
       }); */
@@ -30,8 +33,18 @@ function MintingForm() {
                     <button onClick={() => fetchDetails(nftAddress)}>Retrieve</button>
                 </div>
                 
-                <div className='Methods' style={{width:700}}>
+                <div className='Methods'>
+                    <Dropdown 
+                        formLabel='Choose a service'
+                        buttonText='Send form'
+                        action="/"
+                    >
+                    
+                    <Option value="Choose a method" />
                     {detailsOutput}
+
+                    </Dropdown>
+                    {detailsBr}
                 </div>
             </div>
 

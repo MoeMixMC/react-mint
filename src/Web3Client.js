@@ -62,15 +62,15 @@ export const getDetails = async (nftAddress) => {
 		// Dai contract on Rinkeby
 		NFT_CONTRACT_ADDRESS
 	);
-
+	console.log(abi)
 
 	for(let item of abi) {
     	if(item.name){
-			methodArray.push(item.name)
+			methodArray.push(item)
 			//console.log(item);
 		}
 	}
-	console.log(methodArray)
+	//console.log(methodArray)
 	return methodArray
 };
 
