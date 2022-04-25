@@ -81,11 +81,15 @@ export const getBalance = async () => {
     return web3.utils.fromWei(`${number}`, 'ether')
 }
 
-export const mint = async (param1, param2) => {
+export const call = async (name, params) => {
 
-    return nftContract.methods
+	if(params.length == 0)
+		return await nftContract.methods[name]().call()
+	
+	return await nftContract.methods[name](...params).call()
+    /* return nftContract.methods
 		.mint(param1, param2)
-		.send()
+		.send() */
 }
 
 // export const mintToken = async () => {

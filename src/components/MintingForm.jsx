@@ -1,14 +1,24 @@
-import {getDetails, mint} from '../Web3Client'
+import {getDetails, call} from '../Web3Client'
 import {useState} from 'react'
 import { Dropdown, Option } from './Dropdown'
 function MintingForm() {
 
+    const [appResult, setAppResult] = useState('')
+    const [functionParams, setFunctionParams] = useState([])
     const [selectedMethod, setSelectedMethod] = useState("")
     const [details, setDetails] = useState(0)
     const [nftAddress, setNFTAddress] = useState('0x')
     
-    const mintTokens = () => {
-        mint().then()
+    const callFunction = () => {
+        console.log(selectedMethod)
+        console.log(functionParams)
+        call(selectedMethod.name, functionParams).then(result => {
+            setAppResult(result)
+            console.log(result)
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     const fetchDetails = (nftAddress) => {
@@ -21,19 +31,23 @@ function MintingForm() {
     
     const handleChange = (e) => {
         let item
-        for(item of detailsKeys){
+        for(item of contractAbi){
             if (item.name == e.target.value){
                 setSelectedMethod(item)
+                setFunctionParams([])
             }
         }
     }
     
-    let detailsKeys = Array.from(details)
-    var detailsOutput = detailsKeys.map(item => (<Option key={item.signature} value={item}/>))
-    var detailsBr = detailsKeys.map(item => (<><Option key={Object.create(item)} value={item}/><br /></>))
-    /* var detailsOutput = details.forEach(function (item, index) {
-        <span>{item}</span>
-      }); */
+    let contractAbi = Array.from(details)
+    let contractMethods = contractAbi.map(item => (<Option key={item.signature} value={item}/>))
+    let methodParams = selectedMethod != 0 ? Array.from(selectedMethod.inputs).map((item, index) => (<input id={item.name} key={item.name} onInput={(e) => 
+        {
+            let tempParams = functionParams
+            tempParams[index] = e.target.value
+            setFunctionParams(tempParams)
+        }
+    } placeholder={item.name + ' (' + item.type + ')'}/>)) : []
     return (
         <div className="MintingForm">
             <div className='NFTInfo'>
@@ -43,24 +57,28 @@ function MintingForm() {
                 </div>
                 
                 <div className='Methods'>
-                    {
-                        <Dropdown
-                            formLabel='Choose a function'
-                            buttonText='Send form'
-                            onChange={handleChange}
-                            action='/'
-                        >
-                            {detailsOutput}
 
-                        </Dropdown> 
-                    }
+                    <Dropdown
+                        formLabel='Choose a function'
+                        buttonText='Send form'
+                        onChange={handleChange}
+                    >
+                        {contractMethods}
+
+                    </Dropdown> 
+                    
                     <p>You selected {selectedMethod.name}</p>
                 </div>
             </div>
 
-            <div className='MintingButton'>
-                <button onClick={() => mintTokens()}>Mint</button>
+            <div>
+                {methodParams}
             </div>
+
+            <div className='MintingButton'>
+                <button type="button" className="btn btn-success" onClick={() => callFunction()}>Call/Write</button>
+            </div>
+            <div>{appResult}</div>
         </div>
     )
 }
