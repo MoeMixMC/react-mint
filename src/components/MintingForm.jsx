@@ -1,4 +1,4 @@
-import {getDetails, call} from '../Web3Client'
+import {getDetails, call, write} from '../Web3Client'
 import {useState} from 'react'
 import { Dropdown, Option } from './Dropdown'
 function MintingForm() {
@@ -12,7 +12,17 @@ function MintingForm() {
     const callFunction = () => {
         console.log(selectedMethod)
         console.log(functionParams)
-        call(selectedMethod.name, functionParams).then(result => {
+        call(selectedMethod.signature, functionParams).then(result => {
+            setAppResult(result)
+            console.log(result)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    const writeFunction = () => {
+        write(selectedMethod.name, functionParams).then(result => {
             setAppResult(result)
             console.log(result)
         })
@@ -76,7 +86,8 @@ function MintingForm() {
             </div>
 
             <div className='MintingButton'>
-                <button type="button" className="btn btn-success" onClick={() => callFunction()}>Call/Write</button>
+                <button type="button" className="btn btn-success" onClick={() => callFunction()}>Call</button>
+                <button type="button" className="btn btn-success" onClick={() => writeFunction()}>Write</button>
             </div>
             <div>{appResult}</div>
         </div>

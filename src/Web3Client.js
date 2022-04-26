@@ -81,12 +81,24 @@ export const getBalance = async () => {
     return web3.utils.fromWei(`${number}`, 'ether')
 }
 
-export const call = async (name, params) => {
+export const call = async (sig, params) => {
 
 	if(params.length == 0)
-		return await nftContract.methods[name]().call()
+		return await nftContract.methods[sig]().call()
 	
-	return await nftContract.methods[name](...params).call()
+	return await nftContract.methods[sig](...params).call()
+    /* return nftContract.methods
+		.mint(param1, param2)
+		.send() */
+}
+
+export const write = async (sig, params) => {
+
+	if(params.length == 0)
+		return await nftContract.methods[sig]().send({ from: selectedAccount })
+	
+	// estimate gas first
+	return await nftContract.methods[sig](...params).send({ from: selectedAccount })
     /* return nftContract.methods
 		.mint(param1, param2)
 		.send() */
