@@ -87,9 +87,6 @@ export const call = async (sig, params) => {
 		return await nftContract.methods[sig]().call()
 
 	return await nftContract.methods[sig](...params).call()
-	/* return nftContract.methods
-		.mint(param1, param2)
-		.send() */
 }
 
 export const getGasEstimate = async (sig, params) => {
