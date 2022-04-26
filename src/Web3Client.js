@@ -65,7 +65,7 @@ export const getDetails = async (nftAddress) => {
 	console.log(abi)
 
 	for (let item of abi) {
-		if (item.name) {
+		if (item.type =="function") {
 			methodArray.push(item)
 			//console.log(item);
 		}

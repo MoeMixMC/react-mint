@@ -8,7 +8,7 @@ import {
   
   export function Dropdown(props) {
     return (
-      <DropdownWrapper action={props.action} onChange={props.onChange}>
+      <DropdownWrapper onChange={props.onChange}>
         <StyledLabel htmlFor="functions">
           {props.formLabel}
         </StyledLabel>

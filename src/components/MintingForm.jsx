@@ -11,32 +11,42 @@ function MintingForm() {
     const [nftAddress, setNFTAddress] = useState('0x')
     
     const callFunction = () => {
-        console.log(selectedMethod)
-        console.log(functionParams)
-        call(selectedMethod.signature, functionParams).then(result => {
-            setAppResult(result)
-            console.log(result)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-
-    const writeFunction = () => {
-        getGasEstimate(selectedMethod.signature, functionParams).then(gasAmount => {
-            write(selectedMethod.signature, functionParams, gasAmount).then(result => {
+        // make sure selectedMethod and functionParams are not default
+        if(!(functionParams.length == 0 && selectedMethod == "")){
+            console.log(selectedMethod)
+            console.log(functionParams)
+            call(selectedMethod.signature, functionParams).then(result => {
                 setAppResult(result)
                 console.log(result)
             })
             .catch(err => {
-                console.log('SENDING ERROR')
+                console.log(err)
+            })   
+        }else{
+            alert('Please input an NFT contract address and select a function')
+        }
+    }
+
+    const writeFunction = () => {
+        // make sure selectedMethod and functionParams are not default
+        if(!(functionParams.length == 0 && selectedMethod == "")){
+            getGasEstimate(selectedMethod.signature, functionParams).then(gasAmount => {
+                write(selectedMethod.signature, functionParams, gasAmount).then(result => {
+                    setAppResult(result)
+                    console.log(result)
+                })
+                .catch(err => {
+                    console.log('SENDING ERROR')
+                    console.log(err)
+                })
+            })
+            .catch(err => {
+                console.log('ESTIMATE GAS ERROR')
                 console.log(err)
             })
-        })
-        .catch(err => {
-            console.log('ESTIMATE GAS ERROR')
-            console.log(err)
-        })
+        }else {
+            alert('Please input an NFT contract address and select a function')
+        }
     }
 
     const fetchDetails = (nftAddress) => {
@@ -53,6 +63,7 @@ function MintingForm() {
             if (item.name == e.target.value){
                 setSelectedMethod(item)
                 setFunctionParams([])
+                setAppResult('')
             }
         }
     }
@@ -94,8 +105,8 @@ function MintingForm() {
             </div>
 
             <div className='MintingButton'>
-                <button type="button" className="btn btn-success" onClick={() => callFunction()}>Call</button>
-                <button type="button" className="btn btn-success" onClick={() => writeFunction()}>Write</button>
+                <button type="button" className="btn btn-success btn-call" onClick={() => callFunction()}>Call</button>
+                <button type="button" className="btn btn-success btn-write" onClick={() => writeFunction()}>Write</button>
             </div>
             <div>{appResult}</div>
         </div>
