@@ -1,6 +1,7 @@
-import {getDetails, call, write} from '../Web3Client'
+import {getDetails, call, write, getGasEstimate} from '../Web3Client'
 import {useState} from 'react'
 import { Dropdown, Option } from './Dropdown'
+
 function MintingForm() {
 
     const [appResult, setAppResult] = useState('')
@@ -22,11 +23,18 @@ function MintingForm() {
     }
 
     const writeFunction = () => {
-        write(selectedMethod.name, functionParams).then(result => {
-            setAppResult(result)
-            console.log(result)
+        getGasEstimate(selectedMethod.signature, functionParams).then(gasAmount => {
+            write(selectedMethod.signature, functionParams, gasAmount).then(result => {
+                setAppResult(result)
+                console.log(result)
+            })
+            .catch(err => {
+                console.log('SENDING ERROR')
+                console.log(err)
+            })
         })
         .catch(err => {
+            console.log('ESTIMATE GAS ERROR')
             console.log(err)
         })
     }

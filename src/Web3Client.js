@@ -45,17 +45,17 @@ export const init = async () => {
 };
 
 export const getDetails = async (nftAddress) => {
-	
+
 	let methodArray = [];
 
 	NFT_CONTRACT_ADDRESS = nftAddress
 	let response = await axios.get('https://api.etherscan.io/api?module=contract&action=getabi&address=' + NFT_CONTRACT_ADDRESS + '&apikey=9SQVDEWPVU54IQW67IFQCNVG87H5EBTXJT');
-    let data = response.data
+	let data = response.data
 
-    // create the smart contract JSON ABI
-    let abi_r = data.result;
+	// create the smart contract JSON ABI
+	let abi_r = data.result;
 	let abi = JSON.parse(abi_r);
-    console.log('ABI created')
+	console.log('ABI created')
 
 	nftContract = new web3.eth.Contract(
 		abi,
@@ -64,8 +64,8 @@ export const getDetails = async (nftAddress) => {
 	);
 	console.log(abi)
 
-	for(let item of abi) {
-    	if(item.name){
+	for (let item of abi) {
+		if (item.name) {
 			methodArray.push(item)
 			//console.log(item);
 		}
@@ -76,32 +76,34 @@ export const getDetails = async (nftAddress) => {
 
 export const getBalance = async () => {
 
-    let number = await web3.eth.getBalance(selectedAccount)
-    console.log(web3.utils.fromWei(`${number}`, 'ether'))
-    return web3.utils.fromWei(`${number}`, 'ether')
+	let number = await web3.eth.getBalance(selectedAccount)
+	console.log(web3.utils.fromWei(`${number}`, 'ether'))
+	return web3.utils.fromWei(`${number}`, 'ether')
 }
 
 export const call = async (sig, params) => {
 
-	if(params.length == 0)
+	if (params.length == 0)
 		return await nftContract.methods[sig]().call()
-	
+
 	return await nftContract.methods[sig](...params).call()
-    /* return nftContract.methods
+	/* return nftContract.methods
 		.mint(param1, param2)
 		.send() */
 }
 
-export const write = async (sig, params) => {
+export const getGasEstimate = async (sig, params) => {
+	return await nftContract.methods[sig](...params).estimateGas({ from: selectedAccount })
+}
 
-	if(params.length == 0)
-		return await nftContract.methods[sig]().send({ from: selectedAccount })
-	
-	// estimate gas first
-	return await nftContract.methods[sig](...params).send({ from: selectedAccount })
-    /* return nftContract.methods
-		.mint(param1, param2)
-		.send() */
+export const write = async (sig, params, gasAmount) => {
+
+	console.log(web3.utils.fromWei(`${gasAmount}`, 'ether'))
+	return await nftContract.methods[sig](...params).send({
+		from: selectedAccount,
+		gas: gasAmount,
+		gasPrice: 250
+	})
 }
 
 // export const mintToken = async () => {
